@@ -1,0 +1,588 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Presentasi Use Case Diagram</title>
+<style>
+:root {
+  --bg: #07111f;
+  --panel: #10213a;
+  --blue: #4da3ff;
+  --cyan: #61e3f2;
+  --text: #eef5ff;
+  --muted: #b0c0d5;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: Arial, sans-serif;
+  line-height: 1.7;
+}
+header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 15px 5%;
+  background: #0b192beF;
+  border-bottom: 1px solid #29415f;
+}
+.brand { font-weight: bold; }
+button {
+  cursor: pointer;
+  padding: 10px 14px;
+  border-radius: 9px;
+  border: 1px solid #365575;
+  background: #17304d;
+  color: white;
+}
+button:hover { border-color: var(--cyan); }
+.primary {
+  background: var(--blue);
+  color: #07111f;
+  font-weight: bold;
+}
+.layout {
+  display: grid;
+  grid-template-columns: 230px minmax(0, 1fr);
+  max-width: 1400px;
+  margin: auto;
+}
+nav {
+  padding: 22px 14px;
+  border-right: 1px solid #29415f;
+  position: sticky;
+  top: 70px;
+  height: calc(100vh - 70px);
+  overflow-y: auto;
+}
+nav button {
+  width: 100%;
+  text-align: left;
+  margin-bottom: 6px;
+  background: transparent;
+  border-color: transparent;
+  color: var(--muted);
+}
+nav button.active {
+  background: #17304d;
+  color: white;
+  border-color: #365575;
+}
+main {
+  width: 100%;
+  max-width: 1050px;
+  padding: 35px clamp(18px, 5vw, 60px);
+  margin: auto;
+}
+.slide { display: none; min-height: 68vh; }
+.slide.active { display: block; animation: appear .3s ease; }
+@keyframes appear {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: none; }
+}
+.eyebrow {
+  color: var(--cyan);
+  letter-spacing: 2px;
+  font-size: .8rem;
+  font-weight: bold;
+}
+h1 {
+  font-size: clamp(2.7rem, 7vw, 5rem);
+  line-height: 1.1;
+  margin: 20px 0;
+}
+h2 { font-size: clamp(2rem, 5vw, 3rem); line-height: 1.2; }
+h3 { margin-top: 0; }
+.gradient {
+  color: var(--cyan);
+}
+p, li { color: var(--muted); }
+.hero {
+  min-height: 65vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+.card {
+  background: linear-gradient(145deg, #142943, #0d1a2c);
+  border: 1px solid #29415f;
+  border-radius: 15px;
+  padding: 22px;
+}
+.card p { margin-bottom: 0; }
+.pill {
+  display: inline-block;
+  padding: 6px 12px;
+  margin: 4px;
+  border-radius: 30px;
+  background: #17304d;
+  color: #d7eaff;
+  border: 1px solid #365575;
+}
+.callout {
+  border-left: 3px solid var(--cyan);
+  background: #10243a;
+  padding: 15px;
+  margin: 24px 0;
+}
+.diagram {
+  background: #f5f9ff;
+  border-radius: 14px;
+  padding: 12px;
+  overflow-x: auto;
+}
+.diagram svg { width: 100%; min-width: 550px; }
+.diagram text {
+  font-family: Arial, sans-serif;
+  fill: #183653;
+}
+.quiz-option {
+  display: block;
+  width: 100%;
+  text-align: left;
+  margin: 8px 0;
+  background: #0b192b;
+}
+.quiz-option.selected {
+  border-color: var(--cyan);
+  background: #173b54;
+}
+footer {
+  border-top: 1px solid #29415f;
+  margin-top: 35px;
+  padding-top: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+input {
+  background: #0b192b;
+  color: white;
+  border: 1px solid #365575;
+  padding: 11px;
+  border-radius: 8px;
+  width: 100%;
+  margin: 5px 0;
+}
+.small { font-size: .85rem; }
+@media(max-width:760px) {
+  .layout { display: block; }
+  nav {
+    display: flex;
+    position: static;
+    height: auto;
+    overflow-x: auto;
+    border-right: 0;
+    border-bottom: 1px solid #29415f;
+    padding: 10px;
+    gap: 5px;
+  }
+  nav button { width: auto; flex-shrink: 0; }
+  .grid { grid-template-columns: 1fr; }
+  main { padding: 25px 16px; }
+  header { padding: 12px; }
+  header .brand { font-size: .85rem; }
+}
+@media print {
+  header, nav, footer, .no-print { display: none !important; }
+  .layout { display: block; }
+  .slide { display: block !important; page-break-after: always; }
+  body { background: white; color: black; }
+  .card { border: 1px solid #aaa; }
+  p, li { color: #333; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">◆ UML LEARNING DECK</div>
+  <div>
+    <button onclick="window.print()">Cetak PDF</button>
+    <button class="primary" onclick="fullscreen()">⛶ Presentasi</button>
+  </div>
+</header>
+
+<div class="layout">
+<nav id="navigation">
+  <button class="active" onclick="go(0)">01 · Pembukaan</button>
+  <button onclick="go(1)">02 · Pengertian</button>
+  <button onclick="go(2)">03 · Tujuan</button>
+  <button onclick="go(3)">04 · Komponen</button>
+  <button onclick="go(4)">05 · Relasi UML</button>
+  <button onclick="go(5)">06 · Contoh Diagram</button>
+  <button onclick="go(6)">07 · Cara Membuat</button>
+  <button onclick="go(7)">08 · Kesalahan Umum</button>
+  <button onclick="go(8)">09 · Kuis</button>
+  <button onclick="go(9)">10 · Kesimpulan</button>
+</nav>
+
+<main>
+
+<section class="slide active">
+  <div class="hero">
+    <div class="eyebrow">UNIFIED MODELING LANGUAGE</div>
+    <h1>Memahami <span class="gradient">Use Case Diagram</span></h1>
+    <p>Memahami interaksi antara pengguna dan fungsi yang tersedia di dalam sebuah sistem.</p>
+    <div>
+      <span class="pill">Materi UML</span>
+      <span class="pill">Studi Kasus E-Commerce</span>
+    </div>
+    <div class="card" style="margin-top:25px">
+      <h3>Identitas Presentasi</h3>
+      <input placeholder="Nama mahasiswa">
+      <input placeholder="NIM">
+      <input placeholder="Kelas">
+      <input placeholder="Dosen pengampu">
+    </div>
+    <p class="small">Gunakan tombol Selanjutnya atau tombol panah keyboard untuk berpindah slide.</p>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="eyebrow">01 · KONSEP DASAR</div>
+  <h2>Apa itu <span class="gradient">Use Case Diagram?</span></h2>
+  <p>Use Case Diagram adalah diagram UML yang menggambarkan hubungan antara aktor dengan fungsi atau layanan yang disediakan oleh sebuah sistem.</p>
+  <div class="grid">
+    <div class="card">
+      <h3>👤 Actor</h3>
+      <p>Peran yang berinteraksi dengan sistem, seperti pelanggan atau admin.</p>
+    </div>
+    <div class="card">
+      <h3>🎯 Use Case</h3>
+      <p>Fungsi sistem yang membantu aktor mencapai tujuan tertentu.</p>
+    </div>
+    <div class="card">
+      <h3>▱ Batas Sistem</h3>
+      <p>Menunjukkan fungsi yang termasuk ke dalam sistem.</p>
+    </div>
+    <div class="card">
+      <h3>↔ Relasi</h3>
+      <p>Menjelaskan hubungan antaraktor dan use case.</p>
+    </div>
+  </div>
+  <div class="callout">
+    Intinya, diagram ini menjawab dua pertanyaan: siapa yang menggunakan sistem dan apa yang bisa mereka lakukan?
+  </div>
+</section>
+
+<section class="slide">
+  <div class="eyebrow">02 · KEGUNAAN</div>
+  <h2>Tujuan dan Manfaat</h2>
+  <div class="grid">
+    <div class="card">
+      <h3>Tujuan</h3>
+      <ul>
+        <li>Mengidentifikasi kebutuhan fungsional.</li>
+        <li>Mengenali aktor yang terlibat.</li>
+        <li>Menentukan batas sistem.</li>
+        <li>Menggambarkan fungsi sistem.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Manfaat</h3>
+      <ul>
+        <li>Mudah dipahami oleh pengguna.</li>
+        <li>Membantu perencanaan pengembangan.</li>
+        <li>Mengurangi kesalahpahaman.</li>
+        <li>Menjadi acuan pengujian sistem.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="callout">
+    Contoh: sebelum membuat toko online, pengembang perlu mengetahui apakah pelanggan bisa mencari produk, memesan barang, dan melakukan pembayaran.
+  </div>
+</section>
+
+<section class="slide">
+  <div class="eyebrow">03 · SIMBOL UML</div>
+  <h2>Komponen Utama</h2>
+  <div class="grid">
+    <div class="card">
+      <h3>1. Actor</h3>
+      <p>Digambarkan dengan figur manusia. Aktor dapat berupa pengguna atau sistem eksternal.</p>
+      <p><b>Contoh:</b> Pelanggan, Admin.</p>
+    </div>
+    <div class="card">
+      <h3>2. Use Case</h3>
+      <p>Digambarkan dengan bentuk oval. Namanya biasanya berupa kata kerja.</p>
+      <p><b>Contoh:</b> Login, Melihat Produk.</p>
+    </div>
+    <div class="card">
+      <h3>3. System Boundary</h3>
+      <p>Digambarkan dengan persegi panjang yang membatasi fungsi di dalam sistem.</p>
+      <p><b>Contoh:</b> Sistem E-Commerce.</p>
+    </div>
+    <div class="card">
+      <h3>4. Relationship</h3>
+      <p>Garis atau panah yang menghubungkan aktor dan use case serta menunjukkan jenis hubungan.</p>
+      <p><b>Contoh:</b> Association, Include, Extend.</p>
+    </div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="eyebrow">04 · HUBUNGAN</div>
+  <h2>Relasi dalam Use Case Diagram</h2>
+  <div class="card">
+    <h3>Association</h3>
+    <p>Garis yang menghubungkan aktor dengan use case. Menunjukkan bahwa aktor berinteraksi dengan fungsi tersebut.</p>
+    <hr>
+    <h3>&lt;&lt;include&gt;&gt;</h3>
+    <p>Perilaku use case lain selalu disertakan sebagai bagian dari use case utama.</p>
+    <p><b>Contoh:</b> Checkout menyertakan Menghitung Total.</p>
+    <hr>
+    <h3>&lt;&lt;extend&gt;&gt;</h3>
+    <p>Perilaku tambahan yang terjadi jika kondisi tertentu terpenuhi.</p>
+    <p><b>Contoh:</b> Menggunakan Voucher sebagai tambahan saat Checkout.</p>
+    <hr>
+    <h3>Generalization</h3>
+    <p>Menunjukkan hubungan umum dan khusus, dengan panah segitiga kosong menuju elemen yang lebih umum.</p>
+    <p><b>Contoh:</b> Admin dan Pelanggan merupakan jenis Pengguna.</p>
+  </div>
+  <div class="callout">
+    Ingat: include = perilaku yang selalu disertakan. Extend = perilaku tambahan bersyarat.
+  </div>
+</section>
+
+<section class="slide">
+  <div class="eyebrow">05 · STUDI KASUS</div>
+  <h2>Sistem E-Commerce</h2>
+  <p>Contoh sederhana interaksi Pelanggan dan Admin dengan sistem toko online.</p>
+  <div class="diagram">
+    <svg viewBox="0 0 700 460" role="img" aria-label="Diagram Use Case Sistem E-Commerce">
+      <rect x="170" y="25" width="360" height="410" rx="6" fill="#eaf4ff" stroke="#47739d" stroke-width="2"/>
+      <text x="350" y="50" text-anchor="middle" font-size="17" font-weight="bold">Sistem E-Commerce</text>
+
+      <g stroke="#183653" stroke-width="3" fill="none" stroke-linecap="round">
+        <circle cx="75" cy="160" r="12"/>
+        <path d="M75 172 V215 M53 190 H97 M75 215 L57 240 M75 215 L93 240"/>
+        <circle cx="625" cy="160" r="12"/>
+        <path d="M625 172 V215 M603 190 H647 M625 215 L607 240 M625 215 L643 240"/>
+      </g>
+      <g font-size="14" font-weight="bold" text-anchor="middle">
+        <text x="75" y="260">Pelanggan</text>
+        <text x="625" y="260">Admin</text>
+      </g>
+
+      <g fill="white" stroke="#47739d" stroke-width="1.5">
+        <ellipse cx="280" cy="105" rx="85" ry="23"/>
+        <ellipse cx="425" cy="105" rx="85" ry="23"/>
+        <ellipse cx="280" cy="180" rx="85" ry="23"/>
+        <ellipse cx="425" cy="180" rx="85" ry="23"/>
+        <ellipse cx="280" cy="255" rx="85" ry="23"/>
+        <ellipse cx="425" cy="255" rx="85" ry="23"/>
+        <ellipse cx="350" cy="345" rx="105" ry="23"/>
+      </g>
+      <g font-size="12" text-anchor="middle">
+        <text x="280" y="109">Melihat Produk</text>
+        <text x="425" y="109">Mengelola Produk</text>
+        <text x="280" y="184">Membuat Pesanan</text>
+        <text x="425" y="184">Mengelola Pesanan</text>
+        <text x="280" y="259">Melakukan Pembayaran</text>
+        <text x="425" y="259">Memperbarui Stok</text>
+        <text x="350" y="349">Menghitung Total</text>
+      </g>
+      <g stroke="#34516f" stroke-width="1.5" fill="none">
+        <path d="M95 185 L195 105"/>
+        <path d="M95 195 L195 180"/>
+        <path d="M95 205 L195 255"/>
+        <path d="M605 185 L510 105"/>
+        <path d="M605 195 L510 180"/>
+        <path d="M605 205 L510 255"/>
+        <path d="M280 203 L320 325" stroke-dasharray="5 4"/>
+      </g>
+      <text x="287" y="278" font-size="11">&lt;&lt;include&gt;&gt;</text>
+    </svg>
+  </div>
+  <p class="small">Diagram ini merupakan ilustrasi pengenalan. Relasi dan arah panah harus disesuaikan dengan kebutuhan sistem ketika digunakan sebagai dokumentasi UML final.</p>
+  <div class="callout">
+    Pelanggan berbelanja dan membayar. Admin mengelola produk serta pesanan. Sistem menghitung total pesanan sebagai bagian dari proses checkout.
+  </div>
+</section>
+
+<section class="slide">
+  <div class="eyebrow">06 · LANGKAH PRAKTIS</div>
+  <h2>Cara Membuat Diagram</h2>
+  <div class="card">
+    <h3>Langkah 1 — Tentukan sistem</h3>
+    <p>Contohnya Sistem E-Commerce.</p>
+    <h3>Langkah 2 — Tentukan aktor</h3>
+    <p>Contohnya Pelanggan dan Admin.</p>
+    <h3>Langkah 3 — Tentukan fungsi</h3>
+    <p>Contohnya Login, Melihat Produk, dan Membuat Pesanan.</p>
+    <h3>Langkah 4 — Gambar batas sistem</h3>
+    <p>Letakkan fungsi di dalam persegi panjang.</p>
+    <h3>Langkah 5 — Hubungkan elemen</h3>
+    <p>Tambahkan garis dan relasi sesuai kebutuhan.</p>
+    <h3>Langkah 6 — Periksa diagram</h3>
+    <p>Pastikan semua aktor dan fungsi sesuai dengan kebutuhan sistem.</p>
+  </div>
+  <div class="callout">
+    Kamu bisa menggambar diagram UML menggunakan
+    <a href="https://app.diagrams.net/" target="_blank" rel="noopener">diagrams.net</a>.
+  </div>
+</section>
+
+<section class="slide">
+  <div class="eyebrow">07 · EVALUASI DESAIN</div>
+  <h2>Kesalahan Umum</h2>
+  <div class="grid">
+    <div class="card">
+      <h3>Nama tidak jelas</h3>
+      <p>Hindari nama seperti “Tombol Biru”. Gunakan “Melakukan Pembayaran”.</p>
+    </div>
+    <div class="card">
+      <h3>Aktor salah tempat</h3>
+      <p>Aktor biasanya diletakkan di luar batas sistem.</p>
+    </div>
+    <div class="card">
+      <h3>Relasi tertukar</h3>
+      <p>Pahami perbedaan include dan extend serta arah panahnya.</p>
+    </div>
+    <div class="card">
+      <h3>Terlalu banyak detail</h3>
+      <p>Gunakan use case untuk tujuan pengguna, bukan setiap klik tombol.</p>
+    </div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="eyebrow">08 · UJI PEMAHAMAN</div>
+  <h2>Kuis Interaktif</h2>
+  <p>Pilih jawaban yang menurutmu benar.</p>
+  <div class="card">
+    <p><b>1. Apa fungsi Use Case Diagram?</b></p>
+    <button class="quiz-option" data-q="0" data-a="0">Menyimpan data ke database</button>
+    <button class="quiz-option" data-q="0" data-a="1">Menggambarkan interaksi aktor dan fungsi sistem</button>
+    <button class="quiz-option" data-q="0" data-a="2">Menentukan warna aplikasi</button>
+    <hr>
+    <p><b>2. Apa arti &lt;&lt;include&gt;&gt;?</b></p>
+    <button class="quiz-option" data-q="1" data-a="0">Perilaku selalu disertakan</button>
+    <button class="quiz-option" data-q="1" data-a="1">Perilaku yang selalu dilarang</button>
+    <button class="quiz-option" data-q="1" data-a="2">Hubungan database</button>
+    <hr>
+    <p><b>3. Di mana aktor biasanya berada?</b></p>
+    <button class="quiz-option" data-q="2" data-a="0">Di dalam oval</button>
+    <button class="quiz-option" data-q="2" data-a="1">Di dalam database</button>
+    <button class="quiz-option" data-q="2" data-a="2">Di luar batas sistem</button>
+    <button class="primary" id="checkQuiz">Periksa Jawaban</button>
+    <p id="quizResult" aria-live="polite"></p>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="hero">
+    <div class="eyebrow">09 · PENUTUP</div>
+    <h2>Memahami Sistem Dimulai dari <span class="gradient">Kebutuhan Pengguna</span></h2>
+    <div class="card">
+      <h3>Kesimpulan</h3>
+      <ul>
+        <li>Use Case Diagram merupakan bagian dari UML.</li>
+        <li>Aktor menggambarkan peran yang berinteraksi dengan sistem.</li>
+        <li>Use case menggambarkan fungsi yang tersedia.</li>
+        <li>Relasi menjelaskan hubungan antar elemen.</li>
+        <li>Diagram membantu menyampaikan kebutuhan sistem secara visual.</li>
+      </ul>
+    </div>
+    <h3>Terima kasih!</h3>
+    <p>Apakah ada pertanyaan?</p>
+  </div>
+</section>
+
+<footer class="no-print">
+  <button id="prev">← Sebelumnya</button>
+  <span id="counter">Slide 1 dari 10</span>
+  <button class="primary" id="next">Selanjutnya →</button>
+</footer>
+
+</main>
+</div>
+
+<script>
+const slides = [...document.querySelectorAll(".slide")];
+const navButtons = [...document.querySelectorAll("#navigation button")];
+let current = 0;
+
+function go(index) {
+  current = Math.max(0, Math.min(index, slides.length - 1));
+  slides.forEach((slide, i) =>
+    slide.classList.toggle("active", i === current)
+  );
+  navButtons.forEach((button, i) =>
+    button.classList.toggle("active", i === current)
+  );
+  document.getElementById("counter").textContent =
+    `Slide ${current + 1} dari ${slides.length}`;
+  document.getElementById("prev").disabled = current === 0;
+  document.getElementById("next").textContent =
+    current === slides.length - 1 ? "Kembali ke awal ↺" : "Selanjutnya →";
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+document.getElementById("prev").onclick = () => go(current - 1);
+document.getElementById("next").onclick = () =>
+  go(current === slides.length - 1 ? 0 : current + 1);
+
+document.addEventListener("keydown", event => {
+  if (["INPUT", "TEXTAREA"].includes(document.activeElement.tagName)) return;
+  if (event.key === "ArrowRight" || event.key === "PageDown") go(current + 1);
+  if (event.key === "ArrowLeft" || event.key === "PageUp") go(current - 1);
+});
+
+async function fullscreen() {
+  try {
+    if (!document.fullscreenElement) {
+      await document.documentElement.requestFullscreen();
+    } else {
+      await document.exitFullscreen();
+    }
+  } catch {
+    alert("Fullscreen tidak tersedia pada browser ini.");
+  }
+}
+
+const answers = {};
+document.querySelectorAll(".quiz-option").forEach(button => {
+  button.onclick = () => {
+    const q = button.dataset.q;
+    answers[q] = button.dataset.a;
+    document.querySelectorAll(`.quiz-option[data-q="${q}"]`)
+      .forEach(option => option.classList.remove("selected"));
+    button.classList.add("selected");
+  };
+});
+
+document.getElementById("checkQuiz").onclick = () => {
+  if (Object.keys(answers).length < 3) {
+    document.getElementById("quizResult").textContent =
+      "Silakan jawab semua pertanyaan terlebih dahulu.";
+    return;
+  }
+  const correct = ["1", "0", "2"];
+  const score = correct.reduce(
+    (total, answer, i) => total + (answers[i] === answer ? 1 : 0), 0
+  );
+  document.getElementById("quizResult").textContent =
+    `Skor kamu: ${score}/3. ` +
+    (score === 3 ? "Bagus sekali!" : "Pelajari kembali materi dan coba lagi.");
+};
+
+go(0);
+</script>
+</body>
+</html>
